@@ -9,7 +9,7 @@ const FEEDBACK_KEY = 'aura_teacher_feedback';
 // Static Configuration for Brevo SMS & n8n webhook integration
 // Modified to local n8n URL by default, easily editable when deploying to production hosting
 const N8N_CONFIG = {
-  webhookUrl: 'http://localhost:5678/webhook/aura-trigger',
+  webhookUrl: 'https://n8n-production-74f50.up.railway.app/webhook/aura-trigger',
   brevoApiKey: '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',
   senderId: 'AURA',
   phoneNumber: '+21650402494',
