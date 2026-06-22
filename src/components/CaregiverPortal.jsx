@@ -117,7 +117,7 @@ export function CaregiverPortal({ user, profile }) {
             "sendBody": true,
             "contentType": "json",
             "specifyBody": "json",
-            "jsonBody": "{\n  \"sender\": \"{{ $node['Aura Webhook Listener'].json.body.sender || 'AURA' }}\",\n  \"recipient\": \"{{ $node['Aura Webhook Listener'].json.body.recipient || '+21650402494' }}\",\n  \"content\": \"🔔 Aura Alert: Leo has completed ALL assigned tasks for today! Please review them in the Caregiver Desk.\"\n}"
+            "jsonBody": "{\n  \"sender\": \"AURA\",\n  \"recipient\": \"{{ $node['Aura Webhook Listener'].json.body.recipient || '+21650402494' }}\",\n  \"content\": \"🔔 Aura Alert: Leo has completed ALL assigned tasks for today! Please review them in the Caregiver Desk.\"\n}"
           },
           "id": "sms-complete-id",
           "name": "Brevo SMS: All Tasks Done",
@@ -148,7 +148,7 @@ export function CaregiverPortal({ user, profile }) {
             "sendBody": true,
             "contentType": "json",
             "specifyBody": "json",
-            "jsonBody": "{\n  \"sender\": \"{{ $node['Aura Webhook Listener'].json.body.sender || 'AURA' }}\",\n  \"recipient\": \"{{ $node['Aura Webhook Listener'].json.body.recipient || '+21650402494' }}\",\n  \"content\": \"🌟 Aura Update: Leo's quest '{{ $node['Aura Webhook Listener'].json.body.taskText || $json.body.taskText }}' was verified & approved! 100 Dust added! ✨\"\n}"
+            "jsonBody": "{\n  \"sender\": \"AURA\",\n  \"recipient\": \"{{ $node['Aura Webhook Listener'].json.body.recipient || '+21650402494' }}\",\n  \"content\": \"🌟 Aura Update: Leo's quest '{{ $node['Aura Webhook Listener'].json.body.taskText || $json.body.taskText }}' was verified & approved! 100 Dust added! ✨\"\n}"
           },
           "id": "sms-approved-id",
           "name": "Brevo SMS: Quest Approved",
