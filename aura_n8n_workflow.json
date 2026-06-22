@@ -1,0 +1,202 @@
+{
+  "id": "2Npl3sZsQlzEM9rx",
+  "name": "Aura ADHD Automation Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "aura-trigger",
+        "options": {}
+      },
+      "id": "webhook-node-id",
+      "name": "Aura Webhook Listener",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{$json.body.event}}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "all_tasks_completed"
+            },
+            {
+              "value2": "quest_approved",
+              "output": 1
+            }
+          ]
+        }
+      },
+      "id": "switch-node-id",
+      "name": "Check Event Type",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brevo.com/v3/transactionalSMS/send",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api-key",
+              "value": "={{ $node[\"Aura Webhook Listener\"].json.body.brevoApiKey || \"\" }}"
+            },
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={\"sender\":\"{{ $node[\"Aura Webhook Listener\"].json.body.sender || \"AURA\" }}\",\"recipient\":\"{{ $node[\"Aura Webhook Listener\"].json.body.recipient || \"+21650402494\" }}\",\"content\":\"\uD84F\uDDFB Aura Alert: Leo has completed ALL assigned tasks for today! Please review them in the Caregiver Desk.\"}"
+      },
+      "id": "sms-complete-id",
+      "name": "Brevo SMS: All Tasks Done",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        550,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brevo.com/v3/transactionalSMS/send",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api-key",
+              "value": "={{ $node[\"Aura Webhook Listener\"].json.body.brevoApiKey || \"\" }}"
+            },
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={\"sender\":\"{{ $node[\"Aura Webhook Listener\"].json.body.sender || \"AURA\" }}\",\"recipient\":\"{{ $node[\"Aura Webhook Listener\"].json.body.recipient || \"+21650402494\" }}\",\"content\":\"\uD83C\uDF1F Aura Update: Leo's quest '{{ $node[\"Aura Webhook Listener\"].json.body.taskText || $json.body.taskText }}' was verified & approved! 100 Dust added! \u2728\"}"
+      },
+      "id": "sms-approved-id",
+      "name": "Brevo SMS: Quest Approved",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        550,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "timeAt": "20:00"
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger-id",
+      "name": "Medication Reminder (8 PM)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        100,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brevo.com/v3/transactionalSMS/send",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api-key",
+              "value": ""
+            },
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"sender\": \"AURA\",\n  \"recipient\": \"+21650402494\",\n  \"content\": \"\uD83D\uDC8A Aura Medication Alert: It is 8:00 PM. Please remember to administer Leo's daily medication!\"\n}"
+      },
+      "id": "sms-meds-id",
+      "name": "Brevo SMS: Meds Reminder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        350,
+        480
+      ]
+    }
+  ],
+  "connections": {
+    "Aura Webhook Listener": {
+      "main": [
+        [
+          {
+            "node": "Check Event Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Event Type": {
+      "main": [
+        [
+          {
+            "node": "Brevo SMS: All Tasks Done",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Brevo SMS: Quest Approved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Medication Reminder (8 PM)": {
+      "main": [
+        [
+          {
+            "node": "Brevo SMS: Meds Reminder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true
+}
