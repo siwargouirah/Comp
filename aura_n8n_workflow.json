@@ -62,7 +62,7 @@
         "sendBody": true,
         "contentType": "json",
         "specifyBody": "json",
-        "jsonBody": "={\"sender\":\"{{ $node[\"Aura Webhook Listener\"].json.body.sender || \"AURA\" }}\",\"recipient\":\"{{ $node[\"Aura Webhook Listener\"].json.body.recipient || \"+21650402494\" }}\",\"content\":\"\uD84F\uDDFB Aura Alert: Leo has completed ALL assigned tasks for today! Please review them in the Caregiver Desk.\"}"
+        "jsonBody": "{\"sender\":\"{{ $node[\\\"Aura Webhook Listener\\\"].json.body.sender || \\\"AURA\\\" }}\",\"recipient\":\"{{ $node[\\\"Aura Webhook Listener\\\"].json.body.recipient || \\\"+21650402494\\\" }}\",\"content\":\"\uD84F\uDDFB Aura Alert: Leo has completed ALL assigned tasks for today! Please review them in the Caregiver Desk.\"}"
       },
       "id": "sms-complete-id",
       "name": "Brevo SMS: All Tasks Done",
@@ -93,7 +93,7 @@
         "sendBody": true,
         "contentType": "json",
         "specifyBody": "json",
-        "jsonBody": "={\"sender\":\"{{ $node[\"Aura Webhook Listener\"].json.body.sender || \"AURA\" }}\",\"recipient\":\"{{ $node[\"Aura Webhook Listener\"].json.body.recipient || \"+21650402494\" }}\",\"content\":\"\uD83C\uDF1F Aura Update: Leo's quest '{{ $node[\"Aura Webhook Listener\"].json.body.taskText || $json.body.taskText }}' was verified & approved! 100 Dust added! \u2728\"}"
+        "jsonBody": "{\"sender\":\"{{ $node[\\\"Aura Webhook Listener\\\"].json.body.sender || \\\"AURA\\\" }}\",\"recipient\":\"{{ $node[\\\"Aura Webhook Listener\\\"].json.body.recipient || \\\"+21650402494\\\" }}\",\"content\":\"\uD83C\uDF1F Aura Update: Leo's quest '{{ $node[\\\"Aura Webhook Listener\\\"].json.body.taskText || $json.body.taskText }}' was verified & approved! 100 Dust added! \u2728\"}"
       },
       "id": "sms-approved-id",
       "name": "Brevo SMS: Quest Approved",
